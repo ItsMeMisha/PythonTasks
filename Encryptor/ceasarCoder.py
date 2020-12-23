@@ -1,27 +1,33 @@
 import coder
 
-class CeasarCooder(coder.Coder):
-    alphabetList = list('abcdefghijklmnopqrstuvwxyz')
-    alphabetSize = len(alphabetList)
-    alphabetDict = {alphabetList[indx]: indx for indx in range(alphabetSize)}
+class alphabetHelper:
+
+    def __init__(self):
+        self.alphabetList = list('abcdefghijklmnopqrstuvwxyz')
+        self.size = len(self.alphabetList)
+        self.alphabetDict = {self.alphabetList[indx]: indx for indx in range(self.size)}
+
+class CeasarCoder(coder.Coder):
+
+    alphabet = alphabetHelper()
+
+    @staticmethod
+    def __code(text, key):
+        text = super(CeasarCoder, CeasarCoder)._normalizeText(text)
+        codedText = ''
+        for char in text:
+            codedText += CeasarCoder.alphabet.alphabetList[(CeasarCoder.alphabet.alphabetDict[char] + key) % 
+                                                          CeasarCoder.alphabet.size]
+
+        return codedText
 
     @staticmethod
     def encode(text, key):
-        text = super()._normalizeText(text)
-        encodedText = ''
-        for char in text:
-            encodedText += alphabetList[alphabetDict[char] + key]
-
-        return encodedText
+        return CeasarCoder.__code(text, key)
 
     @staticmethod
     def decode(text, key):
-        text = super()._normalizeText(text)
-        decodedText = ''
-        for char in text:
-            decodedText += alphabetList[alphabetDict[char] - key]
-
-        return decodedText
+        return CeasarCoder.__code(text, key*(-1))
 
     @staticmethod
     def train(text):

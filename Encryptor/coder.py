@@ -17,9 +17,9 @@ class Coder:
 
     @staticmethod
     def _normalizeText(text):
-        alphabet = set('abcdefdhijklmnopqrstuvwxyz')
-        text.lower()
+        alphabet = set('abcdefghijklmnopqrstuvwxyz')
+        text = text.lower()
         for char in set(text):
-            if char not in alphabet:
-                text.replace(char, '')
+            if not (char in alphabet):
+                text = text.replace(char, '')
         return text

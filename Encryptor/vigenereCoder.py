@@ -1,25 +1,34 @@
 import coder
 
-class VigenereEncoder:
-    alphabet = 'abcdefghijklmnopqrstuvwxyz'
-    alphabetSize = len(alphabet)
-    matrix = {alphabet[i]: {alphabet[j]: alphabet[j+i] for j in range(alphabetSize)} for i in range(alphabetSize)}
-    reverseMatrix = {key: {matrix[key][char]: char for char in matrix[key].keys()} for key in matrix.keys()}
+class alphabetHelper:
+
+    def __init__(self):
+        self.alphabet = list('abcdefghijklmnopqrstuvwxyz')
+        self.size = len(self.alphabet)
+        self.matrix = {self.alphabet[i]: {self.alphabet[j]: self.alphabet[(j+i) % self.size]
+                       for j in range(self.size)} for i in range(self.size)}
+
+        self.reverseMatrix = {key: {self.matrix[key][char]: char 
+                             for char in self.matrix[key].keys()} for key in self.matrix.keys()}
+
+class VigenereCoder(coder.Coder):
+
+    alphabet = alphabetHelper()
 
     @staticmethod
     def encode(text, key):
-        return __code(text, key, matrix)
+        return VigenereCoder.__code(text, key, VigenereCoder.alphabet.matrix)
 
     @staticmethod
     def decode(text, key):
-        return __code(text, key, reverseMatrix)
+        return VigenereCoder.__code(text, key, VigenereCoder.alphabet.reverseMatrix)
 
     @staticmethod
     def __code(text, key, matrixToUse):
-        text=super()._normalize(text)
+        text=super(VigenereCoder, VigenereCoder)._normalizeText(text)
         codedText = ''
+                
         for indx in range(len(text)):
-            codedText += matrixToUse[key[indx]][text[indx]]
+            codedText += matrixToUse[key[indx % len(key)]][text[indx]]
 
         return codedText
-
